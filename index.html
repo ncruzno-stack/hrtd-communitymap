@@ -124,6 +124,33 @@ body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;display:fle
 .layer-note{margin-left:auto;font-size:11px;color:#334155;font-style:italic;font-weight:500}
 .tb-legend{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:12px 14px;min-width:155px}
 #qc-map,#bg-map{flex:1}
+.about-btn{margin-left:12px;padding:0 14px;border:1px solid #334155;background:transparent;color:#64748b;font-size:11px;font-weight:600;cursor:pointer;border-radius:6px;display:flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;transition:all .15s;white-space:nowrap;align-self:center}
+.about-btn:hover{color:#93c5fd;border-color:#3b82f6;background:#1e3a5f44}
+.modal-overlay{display:none;position:fixed;inset:0;background:#00000088;z-index:2000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:#0f172a;border:1px solid #1e3a5f;border-radius:16px;width:100%;max-width:760px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 80px #00000099}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid #1e293b;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:16px;font-weight:700;color:#f1f5f9}
+.modal-subtitle{font-size:11px;color:#64748b;margin-top:3px}
+.modal-close{background:transparent;border:1px solid #334155;border-radius:6px;color:#64748b;cursor:pointer;padding:4px 8px;font-size:14px;line-height:1;transition:all .15s}
+.modal-close:hover{color:#f1f5f9;border-color:#64748b}
+.modal-body{padding:20px 24px;overflow-y:auto;flex:1}
+.modal-body::-webkit-scrollbar{width:4px}
+.modal-body::-webkit-scrollbar-thumb{background:#334155;border-radius:2px}
+.modal-section{margin-bottom:24px}
+.modal-section:last-child{margin-bottom:0}
+.modal-section-title{font-size:12px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.modal-section-title::after{content:'';flex:1;height:1px;background:#1e3a5f}
+.modal-p{font-size:12px;color:#94a3b8;line-height:1.75;margin-bottom:8px}
+.modal-p:last-child{margin-bottom:0}
+.modal-callout{background:#0a1628;border:1px solid #1e3a5f;border-left:3px solid #3b82f6;border-radius:8px;padding:14px 16px;margin-top:12px}
+.modal-callout-title{font-size:11px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+.modal-callout p{font-size:11px;color:#64748b;line-height:1.7}
+.modal-footer{padding:14px 24px;border-top:1px solid #1e293b;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-footer-note{font-size:10px;color:#475569;font-style:italic}
+.modal-footer-btn{background:#1e3a5f;border:1px solid #3b82f6;border-radius:6px;color:#93c5fd;cursor:pointer;padding:6px 16px;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:all .15s}
+.modal-footer-btn:hover{background:#1e40af44}
+@media(max-width:640px){.modal-box{max-height:95vh;border-radius:12px}.modal-header,.modal-body,.modal-footer{padding-left:16px;padding-right:16px}}
 
 /* ── Sidebar toggle button (mobile only) ── */
 .sidebar-toggle{display:none;position:absolute;top:8px;left:8px;z-index:500;background:#1e3a5f;border:1px solid #3b82f6;border-radius:8px;padding:7px 10px;cursor:pointer;color:#93c5fd;font-size:11px;font-weight:700;align-items:center;gap:6px;font-family:'Inter',sans-serif}
@@ -210,6 +237,9 @@ body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;display:fle
   </div>
   <button class="tab-btn active" onclick="switchTab('qc')" id="tab-qc"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Quezon City &ndash; ISF Map <span class="tab-badge" id="badge-qc">738,724 HH</span></button>
   <button class="tab-btn" onclick="switchTab('bg')" id="tab-bg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg> Benguet &ndash; Mining Map <span class="tab-badge" id="badge-bg">132,977 HH</span></button>
+  <button class="about-btn" onclick="document.getElementById('about-modal').classList.add('open')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Methodology
+  </button>
   <div class="nav-stats" id="nav-stats-qc">
     <div class="stat-chip"><div class="num">738,724</div><div class="lbl">Total Households</div></div>
     <div class="stat-chip"><div class="num">196,643</div><div class="lbl">ISF Families</div></div>
@@ -265,6 +295,49 @@ body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;display:fle
     <div id="bg-map"></div>
   </div>
 </div>
+<!-- Methodology Modal -->
+<div class="modal-overlay" id="about-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">Data Sources &amp; Mapping Methodology</div>
+        <div class="modal-subtitle">PTSI &ndash; HRTD Community Map &middot; Statistically modeled, georeferenced dataset</div>
+      </div>
+      <button class="modal-close" onclick="document.getElementById('about-modal').classList.remove('open')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Overview</div>
+        <p class="modal-p">The data provided for both Quezon City and Benguet Province is a statistically modeled, georeferenced dataset. Because raw, live clinical registries (with exact household coordinates and names) are strictly protected under the <strong style="color:#e2e8f0">Philippine Data Privacy Act of 2012</strong> and the Department of Health (DOH) Integrated Tuberculosis Information System (ITIS) guidelines, public health mapping projects use highly accurate, representative proxy data.</p>
+        <p class="modal-p">This dataset was compiled and calculated using the following real-world sources, municipal reports, and epidemiological frameworks.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">1. Quezon City &mdash; ISF &amp; TB Dataset</div>
+        <p class="modal-p"><strong style="color:#e2e8f0">Informal Settler Baselines:</strong> Modeled using the structural mapping guidelines and aggregate neighborhood estimates from the Quezon City Housing Community Development and Resettlement Department (HCDRD) (formerly UPAO). Key community boundaries (such as Lupang Pangako in Payatas, Sitio Kumunoy in Bagong Silangan, and Sitio Militar in Bahay Toro) are mapped based on local housing census indicators.</p>
+        <p class="modal-p"><strong style="color:#e2e8f0">Surveillance Case Loads:</strong> Calibrated using aggregate Metro Manila TB case volumes published by the DOH Epidemiology Bureau. Since QC historically carries approximately 15% to 18% of the region&rsquo;s entire TB burden, the overall QC case envelope (~16,500 cases) was proportionally distributed across the 142 barangays. This distribution was adjusted using population density and vulnerability indices from local active case finding (ACF) reports.</p>
+        <p class="modal-p"><strong style="color:#e2e8f0">USAID ACF Field Targets:</strong> Priority targets and screening hotspots (such as those along the San Juan River system or high-congestion transit corridors) align with geographical areas targeted in recent USAID-supported active case-finding campaigns in urban poor districts.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">2. Benguet Province &mdash; Mining &amp; TB Dataset</div>
+        <p class="modal-p"><strong style="color:#e2e8f0">Mining Demographics &amp; Enclaves:</strong> Modeled based on registration data from the Benguet Federation of Small-Scale Miners and the Mines and Geosciences Bureau (MGB). Locations of active Minahang Bayan applications and traditional tunnels in municipalities like Itogon, Mankayan, and Tuba are matched to their geographic centers.</p>
+        <p class="modal-p"><strong style="color:#e2e8f0">Vulnerability &amp; Silicotuberculosis Risk:</strong> The calculated Case Notification Rates (CNR) are weighted to reflect the elevated risk of silicotuberculosis (silica dust exposure combined with TB) in underground mining enclaves. These risk factors are documented in local environmental health monitoring papers (such as those by planetGOLD Philippines and the DOH Cordillera Administrative Region [CAR]).</p>
+        <p class="modal-p"><strong style="color:#e2e8f0">Territorial Mapping:</strong> Georeferenced coordinates represent the geographical centroids of the central barangays or municipal halls for all 13 official municipalities, allowing for complete provincial coverage on GIS base layers.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Citation &amp; Methodology Note</div>
+        <div class="modal-callout">
+          <div class="modal-callout-title">Data &amp; Mapping Methodology</div>
+          <p>Baseline administrative boundaries were sourced from PhilGIS/OCHA Services. Informal Settler Family (ISF) densities and mining community locations are modeled after public reports from the Quezon City HCDRD and the Benguet Federation of Small-Scale Miners. Tuberculosis Case Notification Rates (CNR) and annual case volumes represent georeferenced proportional estimations mapped using aggregate regional baselines from the Department of Health (DOH) and local active case-finding indicators. Actual patient coordinates are withheld to comply with the <strong style="color:#93c5fd">Philippine Data Privacy Act of 2012</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-footer-note">For research and planning use only &middot; PTSI &ndash; HRTD &middot; 2025</span>
+      <button class="modal-footer-btn" onclick="document.getElementById('about-modal').classList.remove('open')">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Mobile sidebar toggle ────────────────────────────────────────────────────
 function toggleSidebar(tab){
