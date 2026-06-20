@@ -588,6 +588,7 @@ function buildTBSidebar(){
     blk.appendChild(hdr);blk.appendChild(bl);c.appendChild(blk);
   });
 }
+var tbLayerMap = {};
 function showTBBarangayDetail(name,tb,d){
   const p=document.getElementById('qc-detail');
   const color=TB_COLORS[tb.range]||TB_COLORS['0'];
@@ -598,6 +599,7 @@ function showTBBarangayDetail(name,tb,d){
     +'<div class="enclave-title">TB Range</div>'
     +'<div class="enclave-item"><span style="display:inline-block;width:14px;height:14px;background:'+color+';border-radius:3px;vertical-align:middle;margin-right:6px;"></span>'+rangeLabel[tb.range]+'</div>'
     +'<div style="margin-top:10px;color:#475569;font-size:10px;font-style:italic;">Source: QC-NTP 2024</div>';
+  if(tbLayerMap[name]){qcMap.setView(tbLayerMap[name].getBounds().getCenter(),14,{animate:true});setTimeout(function(){tbLayerMap[name].openPopup();},350);}
 }
 function showQCDetail(b,d){
   const p=document.getElementById('qc-detail'),rc=RISK_COLOR[b.risk];
@@ -608,6 +610,7 @@ function selectQCBar(b,d){
   const el=document.querySelector('.barangay-item[data-id="'+b.id+'"]');
   if(el){el.classList.add('selected');const pl=el.closest('.barangay-list');if(pl){pl.classList.add('open');pl.previousElementSibling.querySelector('.chevron').classList.add('open');pl.previousElementSibling.classList.add('active');}}
   showQCDetail(b,d);qcMap.setView([b.lat,b.lng],14,{animate:true});
+  if(brgyLayerMap[b.id]){setTimeout(function(){brgyLayerMap[b.id].openPopup();},350);}
 }
 // ── BENGUET DATA ─────────────────────────────────────────────────────────────
 const MUNICIPALITIES=[
@@ -668,10 +671,13 @@ function selectBGMuni(m){
   const el=document.querySelector('.muni-item[data-id="'+m.id+'"]');
   if(el)el.classList.add('selected');
   showBGDetail(m);bgMap.setView([m.lat,m.lng],12,{animate:true});
+  if(bgMuniLayerMap[m.id]){setTimeout(function(){bgMuniLayerMap[m.id].openPopup();},350);}
 }
+var bgMuniLayerMap={};
 let bgChoropleth=null;
 function showBGChoropleth(){
   if(bgChoropleth){bgMap.removeLayer(bgChoropleth);bgChoropleth=null;}
+  bgMuniLayerMap={};
   function renderBGChoropleth(geojson){
     bgChoropleth=L.geoJSON(geojson,{
       style:function(feature){
@@ -690,10 +696,11 @@ function showBGChoropleth(){
           '<div class="popup-name">'+name+(name!==m.name?' <span style="font-size:11px;color:#94a3b8">(data: '+m.name+')</span>':'')+'</div>'+
           '<div class="popup-district">Benguet &middot; <span style="color:'+c.fill+'">'+m.tbVulnerability+' TB Risk</span></div>'+
           '<div style="margin-top:6px"><span style="font-size:20px;font-weight:700;color:'+c.fill+'">~'+mid.toLocaleString()+'</span>'+
-          '<span class="popup-fam-lbl"> Est. Families</span></div>'
+          '<span class="popup-fam-lbl"> Est. Affected Families</span></div>'
         );
         layer.on('mouseover',function(){layer.setStyle({weight:2.5,color:'#fff',fillOpacity:0.92});});
         layer.on('mouseout',function(){bgChoropleth.resetStyle(layer);});
+        bgMuniLayerMap[m.id]=layer;
         layer.on('click',function(){selectBGMuni(m);});
       }
     }).addTo(bgMap);
@@ -710,6 +717,14 @@ function showBGChoropleth(){
 
 
 
+const districtDefs_TB=[
+  {id:'D1',name:'District I',color:'#f97316',barangays:['Bagong Pag-asa','Bahay Toro','Balingasa','Bungad','Damayan','Damar','Del Monte','Mariblo','N.S. Amoranto (Gintong Silahis)','Nayong Kanluran','Obrero','Pag-ibig Sa Nayon','Paltok','Paraiso','Phil-Am','Project 6','Ramon Magsaysay','Sacred Heart','Saint Peter','San Antonio','Santa Cruz','Santo Cristo','Sienna','South Triangle','Talayan','Unang Sigaw','Vasra','Veterans Village','West Triangle']},
+  {id:'D2',name:'District II',color:'#ef4444',barangays:['Bagong Silangan','Batasan Hills','Commonwealth','Holy Spirit','Matandang Balara','Payatas','Pansol','Blue Ridge A','Blue Ridge B','Libis','Amihan','Bagumbuhay','Claro','Duyan-duyan','Krus Na Ligas','Loyola Heights','Mangga','Marilag','Old Capitol Site','San Roque','Silangan','Tagumpay']},
+  {id:'D3',name:'District III',color:'#fcd34d',barangays:['Aurora','Bayanihan','Camp Aguinaldo','Bagong Lipunan Ng Crame','Bagumbayan','Damayang Lagi','Dioquino Zobel','Don Manuel','Doña Imelda','Doña Josefa','E. Rodriguez','East Kamias','Escopa I','Escopa II','Escopa III','Escopa IV','Horseshoe','Immaculate Concepcion','Kalusugan','Kaunlaran','Kristong Hari','Laging Handa','Malaya','Mariana','Masagana','Milagrosa','Paligsahan','Pinyahan','Quirino 2-A','Quirino 2-B','Quirino 2-C','Quirino 3-A','Roxas','Saint Ignatius','San Isidro','San Jose','San Martin de Porres','San Vicente','Santa Teresita','Santo Domingo (Matalahib)','Santo Niño','Santol','San Isidro Labrador','Sikatuna Village','Socorro','Botocan','Central','West Kamias','Valencia','Villa Maria Clara','White Plains','U.P. Campus','U.P. Village','Teachers Village East','Teachers Village West']},
+  {id:'D4',name:'District IV',color:'#f97316',barangays:['Alicia','Balong Bato','Katipunan','Lourdes','Maharlika','Manresa','Masambong','Pinagkaisahan','San Roque','Santo Cristo']},
+  {id:'D5',name:'District V',color:'#f97316',barangays:['Bagbag','Capri','Gulod','Kaligayahan','Nagkaisang Nayon','North Fairview','Novaliches Proper','San Agustin','San Bartolome','Santa Monica','Sauyo','Talipapa']},
+  {id:'D6',name:'District VI',color:'#ef4444',barangays:['Apolonio Samson','Baesa','Bagong Pag-asa','Bahay Toro','Balingasa','Culiat','Fairview','Greater Lagro','New Era (Constitution Hills)','Pasong Putik Proper (Pasong Putik)','Pasong Tamo','Sangandaan','Santa Lucia','Tandang Sora','Tatalon']},
+];
 let currentQCLayer = 'isf';
 let tbLegendControl = null;
 let isfLegendControl = null;
@@ -781,8 +796,10 @@ function getISFColor(name) {
   if (!risk) return '#1e3a5f';
   return RISK_COLOR[risk].fill;
 }
+var brgyLayerMap = {};
 function showISFChoropleth() {
   hideISFChoropleth();
+  brgyLayerMap = {};
   isfChoropleth = L.geoJSON(QC_BRGY_GEOJSON, {
     style: function(feature) {
       var name=feature.properties.adm4_name;
@@ -817,7 +834,7 @@ function showISFChoropleth() {
       );
       layer.on('mouseover',function(e){layer.setStyle({weight:2,color:'#fff',fillOpacity:0.9});});
       layer.on('mouseout',function(e){isfChoropleth.resetStyle(layer);});
-      if (bdata && ddata) layer.on('click',function(){selectQCBar(bdata,ddata);});
+      if (bdata && ddata) { brgyLayerMap[bdata.id]=layer; layer.on('click',function(){selectQCBar(bdata,ddata);}); }
     }
   }).addTo(qcMap);
 }
@@ -832,6 +849,7 @@ function getTBColor(name) {
 }
 function showTBChoropleth() {
   hideTBChoropleth();
+  tbLayerMap = {};
   tbLayer = L.geoJSON(QC_BRGY_GEOJSON, {
     style: function(feature) {
       var name = feature.properties.adm4_name;
@@ -853,6 +871,12 @@ function showTBChoropleth() {
       );
       layer.on('mouseover', function(e) { layer.setStyle({ weight: 2, color: '#fff', fillOpacity: 0.9 }); });
       layer.on('mouseout',  function(e) { tbLayer.resetStyle(layer); });
+      tbLayerMap[name] = layer;
+      if (tb) layer.on('click', function() {
+        var dDef = null;
+        districtDefs_TB.forEach(function(dd){ if(dd.barangays.indexOf(name)>-1) dDef=dd; });
+        if(dDef) showTBBarangayDetail(name, tb, dDef);
+      });
     }
   }).addTo(qcMap);
 }
