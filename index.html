@@ -288,7 +288,7 @@ body{font-family:'Inter',sans-serif;background:#0f172a;color:#e2e8f0;display:fle
     </button>
     <div class="sidebar-overlay" id="bg-overlay" onclick="toggleSidebar('bg')"></div>
     <div id="bg-sidebar">
-      <div class="bg-sidebar-title">Est. Affected Families</div>
+      <div class="bg-sidebar-title">Est. Affected Families<div style="font-size:9px;font-weight:400;color:#475569;text-transform:none;letter-spacing:0;margin-top:2px;">Families affected by mining activity</div></div>
       <div class="muni-list" id="muni-list"></div>
       <div id="bg-detail"><div class="bg-placeholder">&#8592; Click a municipality to see details</div></div>
     </div>
@@ -658,7 +658,7 @@ function buildBGSidebar(){
   MUNICIPALITIES.forEach(m=>{
     const it=document.createElement('div');it.className='muni-item';it.dataset.id=m.id;
     const mid=Math.round((m.familiesMin+m.familiesMax)/2).toLocaleString();
-    it.innerHTML='<div class="muni-dot" style="background:'+m.color+'"></div><div class="muni-info"><div class="muni-name">'+m.name+'</div><div class="muni-intensity intensity-'+m.intensity+'">'+m.tbVulnerability+' TB Risk</div></div><div class="muni-fam" style="background:'+m.color+'22;color:'+m.color+'">~'+mid+'</div>';
+    it.innerHTML='<div class="muni-dot" style="background:'+m.color+'"></div><div class="muni-info"><div class="muni-name">'+m.name+'</div><div class="muni-intensity intensity-'+m.intensity+'">'+m.tbVulnerability+' TB Risk</div></div><div style="text-align:right;flex-shrink:0"><div class="muni-fam" style="background:'+m.color+'22;color:'+m.color+'">~'+mid+'</div><div style="font-size:9px;color:#475569;margin-top:2px;">by mining</div></div>';
     it.addEventListener('click',()=>selectBGMuni(m));c.appendChild(it);
   });
 }
